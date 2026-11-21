@@ -1,0 +1,425 @@
+/* DevCode brand themes.
+ *
+ * 8 kits: aurora (default), ember, graphite, ink, lagoon, neon, paper, sakura.
+ * Each kit defines its own --kit-* variables; the mapping block at the bottom
+ * points the vendor --v2-* / --background-* / --color-* tokens at them.
+ *
+ * Switching themes: set `data-theme="<kit>"` on <html>. Default (no attr) is
+ * aurora. The picker fab writes localStorage and the attribute on mount.
+ *
+ * IMPORTANT: kit vars are the ONLY per-theme surface. Every component that
+ * reads an upstream token picks up the new theme automatically through the
+ * mapping, no per-theme component CSS needed.
+ */
+
+@layer theme {
+  /* ============================================================
+   *  Default (aurora) — set on :root so a page with no data-theme
+   *  still has a full palette.
+   * ============================================================ */
+  :root {
+    color-scheme: dark;
+    --kit-bg-base: #0c0a1d;
+    --kit-bg-subtle: #110e27;
+    --kit-bg-layer-01: #181434;
+    --kit-bg-layer-02: #201a45;
+    --kit-bg-layer-03: #2a225a;
+    --kit-accent: #a78bfa;
+    --kit-accent-hover: #c4b5fd;
+    --kit-text-base: #f2eeff;
+    --kit-text-muted: #b3a9d9;
+    --kit-text-faint: #776da3;
+    --kit-border-base: rgba(167, 139, 250, 0.18);
+    --kit-border-strong: rgba(167, 139, 250, 0.4);
+    --kit-danger: #ff7a9c;
+    --kit-warn: #ffc96b;
+    --kit-success: #5eead4;
+    --kit-radius-sm: 6px;
+    --kit-radius-md: 10px;
+  }
+
+  :root[data-theme="aurora"] {
+    color-scheme: dark;
+    --kit-bg-base: #0c0a1d;
+    --kit-bg-subtle: #110e27;
+    --kit-bg-layer-01: #181434;
+    --kit-bg-layer-02: #201a45;
+    --kit-bg-layer-03: #2a225a;
+    --kit-accent: #a78bfa;
+    --kit-accent-hover: #c4b5fd;
+    --kit-text-base: #f2eeff;
+    --kit-text-muted: #b3a9d9;
+    --kit-text-faint: #776da3;
+    --kit-border-base: rgba(167, 139, 250, 0.18);
+    --kit-border-strong: rgba(167, 139, 250, 0.4);
+    --kit-danger: #ff7a9c;
+    --kit-warn: #ffc96b;
+    --kit-success: #5eead4;
+    --kit-radius-sm: 6px;
+    --kit-radius-md: 10px;
+  }
+
+  :root[data-theme="ember"] {
+    color-scheme: dark;
+    --kit-bg-base: #120b07;
+    --kit-bg-subtle: #1a110b;
+    --kit-bg-layer-01: #23170f;
+    --kit-bg-layer-02: #2e1e14;
+    --kit-bg-layer-03: #3d281a;
+    --kit-accent: #ff7a3d;
+    --kit-accent-hover: #ff9a66;
+    --kit-text-base: #fff3ea;
+    --kit-text-muted: #d6b6a2;
+    --kit-text-faint: #957462;
+    --kit-border-base: rgba(255, 154, 102, 0.16);
+    --kit-border-strong: rgba(255, 154, 102, 0.34);
+    --kit-danger: #ff5f5f;
+    --kit-warn: #ffc44d;
+    --kit-success: #9bd67f;
+    --kit-radius-sm: 4px;
+    --kit-radius-md: 8px;
+  }
+
+  :root[data-theme="graphite"] {
+    color-scheme: dark;
+    --kit-bg-base: #18181b;
+    --kit-bg-subtle: #1e1e22;
+    --kit-bg-layer-01: #26262b;
+    --kit-bg-layer-02: #303036;
+    --kit-bg-layer-03: #3c3c43;
+    --kit-accent: #e4e4e7;
+    --kit-accent-hover: #ffffff;
+    --kit-text-base: #ececee;
+    --kit-text-muted: #a1a1aa;
+    --kit-text-faint: #71717a;
+    --kit-border-base: rgba(228, 228, 231, 0.1);
+    --kit-border-strong: rgba(228, 228, 231, 0.24);
+    --kit-danger: #e5a3a3;
+    --kit-warn: #d9c48f;
+    --kit-success: #a3d1b0;
+    --kit-radius-sm: 6px;
+    --kit-radius-md: 8px;
+  }
+
+  :root[data-theme="ink"] {
+    color-scheme: dark;
+    --kit-bg-base: #000000;
+    --kit-bg-subtle: #0a0a0a;
+    --kit-bg-layer-01: #121212;
+    --kit-bg-layer-02: #1c1c1c;
+    --kit-bg-layer-03: #2a2a2a;
+    --kit-accent: #ffffff;
+    --kit-accent-hover: #d9d9d9;
+    --kit-text-base: #f5f5f5;
+    --kit-text-muted: #a3a3a3;
+    --kit-text-faint: #6b6b6b;
+    --kit-border-base: rgba(255, 255, 255, 0.12);
+    --kit-border-strong: rgba(255, 255, 255, 0.32);
+    --kit-danger: #ffffff;
+    --kit-warn: #d4d4d4;
+    --kit-success: #a3a3a3;
+    --kit-radius-sm: 4px;
+    --kit-radius-md: 6px;
+  }
+
+  :root[data-theme="lagoon"] {
+    color-scheme: dark;
+    --kit-bg-base: #04171c;
+    --kit-bg-subtle: #082027;
+    --kit-bg-layer-01: #0c2a32;
+    --kit-bg-layer-02: #11363f;
+    --kit-bg-layer-03: #17454f;
+    --kit-accent: #2dd4bf;
+    --kit-accent-hover: #5eead4;
+    --kit-text-base: #e4fbf7;
+    --kit-text-muted: #95c7c0;
+    --kit-text-faint: #5c8c86;
+    --kit-border-base: rgba(94, 234, 212, 0.16);
+    --kit-border-strong: rgba(94, 234, 212, 0.34);
+    --kit-danger: #ff8b80;
+    --kit-warn: #f5c45e;
+    --kit-success: #86e39a;
+    --kit-radius-sm: 6px;
+    --kit-radius-md: 12px;
+  }
+
+  :root[data-theme="neon"] {
+    color-scheme: dark;
+    --kit-bg-base: #07040f;
+    --kit-bg-subtle: #0d0819;
+    --kit-bg-layer-01: #140c24;
+    --kit-bg-layer-02: #1c1131;
+    --kit-bg-layer-03: #261743;
+    --kit-accent: #ff3fb8;
+    --kit-accent-hover: #ff7ad0;
+    --kit-text-base: #f7ecff;
+    --kit-text-muted: #b9a3d6;
+    --kit-text-faint: #7a6699;
+    --kit-border-base: rgba(255, 63, 184, 0.2);
+    --kit-border-strong: rgba(54, 233, 255, 0.45);
+    --kit-danger: #ff4d6d;
+    --kit-warn: #ffd23f;
+    --kit-success: #3dffa8;
+    --kit-radius-sm: 4px;
+    --kit-radius-md: 8px;
+  }
+
+  :root[data-theme="paper"] {
+    color-scheme: light;
+    --kit-bg-base: #ffffff;
+    --kit-bg-subtle: #f4f4f4;
+    --kit-bg-layer-01: #ffffff;
+    --kit-bg-layer-02: #ececec;
+    --kit-bg-layer-03: #dedede;
+    --kit-accent: #0a0a0a;
+    --kit-accent-hover: #333333;
+    --kit-text-base: #0a0a0a;
+    --kit-text-muted: #555555;
+    --kit-text-faint: #8a8a8a;
+    --kit-border-base: rgba(10, 10, 10, 0.14);
+    --kit-border-strong: rgba(10, 10, 10, 0.85);
+    --kit-danger: #0a0a0a;
+    --kit-warn: #555555;
+    --kit-success: #0a0a0a;
+    --kit-radius-sm: 0px;
+    --kit-radius-md: 0px;
+  }
+
+  :root[data-theme="sakura"] {
+    color-scheme: light;
+    --kit-bg-base: #fff6f8;
+    --kit-bg-subtle: #fdecf1;
+    --kit-bg-layer-01: #ffffff;
+    --kit-bg-layer-02: #fbe1e9;
+    --kit-bg-layer-03: #f5ccd9;
+    --kit-accent: #e0457b;
+    --kit-accent-hover: #c62f66;
+    --kit-text-base: #2b1520;
+    --kit-text-muted: #7b5465;
+    --kit-text-faint: #ad8797;
+    --kit-border-base: rgba(224, 69, 123, 0.16);
+    --kit-border-strong: rgba(224, 69, 123, 0.34);
+    --kit-danger: #d6364a;
+    --kit-warn: #b97a0c;
+    --kit-success: #23905f;
+    --kit-radius-sm: 8px;
+    --kit-radius-md: 14px;
+  }
+
+  /* ============================================================
+   *  Animated kits — these pair with devcode-motion.css + the
+   *  init-fx runtime. The picker flags `data-fx` on <html> so the
+   *  runtime knows whether to attach the cursor / parallax / trail
+   *  layer; the plain palette kits above don't set it.
+   * ============================================================ */
+
+  :root[data-theme="frost"] {
+    color-scheme: dark;
+    --kit-bg-base: #0b1026;
+    --kit-bg-subtle: rgba(255, 255, 255, 0.06);
+    --kit-bg-layer-01: rgba(255, 255, 255, 0.08);
+    --kit-bg-layer-02: rgba(255, 255, 255, 0.13);
+    --kit-bg-layer-03: rgba(255, 255, 255, 0.19);
+    --kit-accent: #7dd3fc;
+    --kit-accent-hover: #bae6fd;
+    --kit-text-base: #f0f6ff;
+    --kit-text-muted: #b6c4e0;
+    --kit-text-faint: #7d8db0;
+    --kit-border-base: rgba(255, 255, 255, 0.14);
+    --kit-border-strong: rgba(255, 255, 255, 0.3);
+    --kit-danger: #fb7185;
+    --kit-warn: #fcd34d;
+    --kit-success: #6ee7b7;
+    --kit-radius-sm: 8px;
+    --kit-radius-md: 12px;
+  }
+
+  :root[data-theme="obsidian"] {
+    color-scheme: dark;
+    --kit-bg-base: #050505;
+    --kit-bg-subtle: #0b0b0b;
+    --kit-bg-layer-01: #111111;
+    --kit-bg-layer-02: #181818;
+    --kit-bg-layer-03: #232323;
+    --kit-accent: #fafafa;
+    --kit-accent-hover: #ffffff;
+    --kit-text-base: #ededed;
+    --kit-text-muted: #9a9a9a;
+    --kit-text-faint: #5c5c5c;
+    --kit-border-base: rgba(255, 255, 255, 0.08);
+    --kit-border-strong: rgba(255, 255, 255, 0.22);
+    --kit-danger: #fafafa;
+    --kit-warn: #bdbdbd;
+    --kit-success: #8c8c8c;
+    --kit-radius-sm: 4px;
+    --kit-radius-md: 6px;
+  }
+
+  :root[data-theme="phosphor"] {
+    color-scheme: dark;
+    --kit-bg-base: #020a04;
+    --kit-bg-subtle: #04120a;
+    --kit-bg-layer-01: #071a0e;
+    --kit-bg-layer-02: #0b2415;
+    --kit-bg-layer-03: #10301d;
+    --kit-accent: #39ff88;
+    --kit-accent-hover: #8dffb9;
+    --kit-text-base: #b8ffd2;
+    --kit-text-muted: #5fd38f;
+    --kit-text-faint: #2f8a56;
+    --kit-border-base: rgba(57, 255, 136, 0.18);
+    --kit-border-strong: rgba(57, 255, 136, 0.45);
+    --kit-danger: #ff5c5c;
+    --kit-warn: #ffcc33;
+    --kit-success: #39ff88;
+    --kit-radius-sm: 2px;
+    --kit-radius-md: 4px;
+  }
+
+  :root[data-theme="porcelain"] {
+    color-scheme: light;
+    --kit-bg-base: #f5f5f4;
+    --kit-bg-subtle: rgba(255, 255, 255, 0.6);
+    --kit-bg-layer-01: rgba(255, 255, 255, 0.75);
+    --kit-bg-layer-02: rgba(0, 0, 0, 0.04);
+    --kit-bg-layer-03: rgba(0, 0, 0, 0.08);
+    --kit-accent: #111111;
+    --kit-accent-hover: #2b2b2b;
+    --kit-text-base: #141414;
+    --kit-text-muted: #5e5e5e;
+    --kit-text-faint: #9b9b9b;
+    --kit-border-base: rgba(0, 0, 0, 0.08);
+    --kit-border-strong: rgba(0, 0, 0, 0.22);
+    --kit-danger: #111111;
+    --kit-warn: #5e5e5e;
+    --kit-success: #111111;
+    --kit-radius-sm: 10px;
+    --kit-radius-md: 16px;
+  }
+
+  :root[data-theme="prism"] {
+    color-scheme: dark;
+    --kit-bg-base: #08070d;
+    --kit-bg-subtle: rgba(20, 18, 32, 0.72);
+    --kit-bg-layer-01: rgba(255, 255, 255, 0.05);
+    --kit-bg-layer-02: rgba(255, 255, 255, 0.09);
+    --kit-bg-layer-03: rgba(255, 255, 255, 0.14);
+    --kit-accent: #8b9dff;
+    --kit-accent-hover: #b3c0ff;
+    --kit-text-base: #f4f3ff;
+    --kit-text-muted: #a9a6c9;
+    --kit-text-faint: #6f6c8f;
+    --kit-border-base: rgba(255, 255, 255, 0.09);
+    --kit-border-strong: rgba(255, 255, 255, 0.2);
+    --kit-danger: #ff6b8b;
+    --kit-warn: #ffd166;
+    --kit-success: #5ef0c4;
+    --kit-radius-sm: 8px;
+    --kit-radius-md: 14px;
+  }
+
+  :root[data-theme="vapor"] {
+    color-scheme: dark;
+    --kit-bg-base: #1a0b2e;
+    --kit-bg-subtle: #220f3b;
+    --kit-bg-layer-01: #2b1449;
+    --kit-bg-layer-02: #361a5a;
+    --kit-bg-layer-03: #43216e;
+    --kit-accent: #ff8a5c;
+    --kit-accent-hover: #ffb08f;
+    --kit-text-base: #fff0f6;
+    --kit-text-muted: #d5b3e0;
+    --kit-text-faint: #9474a8;
+    --kit-border-base: rgba(255, 138, 92, 0.18);
+    --kit-border-strong: rgba(255, 79, 163, 0.42);
+    --kit-danger: #ff4f79;
+    --kit-warn: #ffd166;
+    --kit-success: #7cf2c3;
+    --kit-radius-sm: 8px;
+    --kit-radius-md: 14px;
+  }
+
+  /* ============================================================
+   *  Mapping — vendor tokens → kit tokens.
+   *  This block never changes per theme; every component that reads
+   *  a vendor token picks up whatever the current :root[data-theme]
+   *  resolved --kit-* to.
+   * ============================================================ */
+  :root {
+    /* v2 background surfaces */
+    --v2-background-bg-base: var(--kit-bg-base);
+    --v2-background-bg-subtle: var(--kit-bg-subtle);
+    --v2-background-bg-deep: var(--kit-bg-base);
+    --v2-background-bg-layer-01: var(--kit-bg-layer-01);
+    --v2-background-bg-layer-02: var(--kit-bg-layer-02);
+    --v2-background-bg-layer-03: var(--kit-bg-layer-03);
+    --v2-background-bg-layer-04: var(--kit-bg-layer-03);
+    --v2-background-bg-contrast: var(--kit-text-base);
+    --v2-background-bg-inverse: var(--kit-text-base);
+    --v2-background-bg-accent: var(--kit-accent);
+    --v2-background-bg-button-neutral: var(--kit-bg-layer-02);
+    --v2-background-bg-icon-button-contrast: var(--kit-bg-layer-02);
+    --v2-background-bg-code-path: var(--kit-bg-layer-01);
+
+    /* Tailwind v4 --color-* aliases that components reach for directly */
+    --color-v2-background-bg-base: var(--kit-bg-base);
+    --color-v2-background-bg-deep: var(--kit-bg-base);
+    --color-v2-background-bg-layer-01: var(--kit-bg-layer-01);
+    --color-v2-background-bg-layer-02: var(--kit-bg-layer-02);
+    --color-v2-background-bg-layer-03: var(--kit-bg-layer-03);
+    --color-v2-background-bg-layer-04: var(--kit-bg-layer-03);
+    --color-v2-background-bg-accent: var(--kit-accent);
+    --color-v2-background-bg-inverse: var(--kit-text-base);
+
+    /* session-ui's own namespace */
+    --background-base: var(--kit-bg-base);
+    --background-weak: var(--kit-bg-subtle);
+    --background-strong: var(--kit-bg-layer-01);
+    --background-stronger: var(--kit-bg-layer-02);
+    --color-background-base: var(--kit-bg-base);
+    --color-background-stronger: var(--kit-bg-layer-02);
+
+    /* Text */
+    --v2-text-text-base: var(--kit-text-base);
+    --v2-text-text-muted: var(--kit-text-muted);
+    --v2-text-text-faint: var(--kit-text-faint);
+    --v2-text-text-contrast: var(--kit-bg-base);
+    --v2-text-text-success: var(--kit-success);
+    --v2-text-text-danger: var(--kit-danger);
+
+    /* Borders */
+    --v2-border-border-muted: var(--kit-border-base);
+    --v2-border-border-base: var(--kit-border-base);
+    --v2-border-border-strong: var(--kit-border-strong);
+    --v2-border-border-focus: var(--kit-accent);
+
+    /* Overlays */
+    --v2-overlay-simple-overlay-hover: color-mix(in srgb, var(--kit-accent) 8%, transparent);
+    --v2-overlay-simple-overlay-pressed: color-mix(in srgb, var(--kit-accent) 14%, transparent);
+    --v2-overlay-simple-overlay-contrast-hover: color-mix(in srgb, var(--kit-accent) 16%, transparent);
+    --v2-overlay-simple-overlay-contrast-pressed: color-mix(in srgb, var(--kit-accent) 24%, transparent);
+    --v2-overlay-simple-overlay-scrim: color-mix(in srgb, var(--kit-bg-base) 55%, transparent);
+
+    /* State backgrounds */
+    --v2-state-bg-info: color-mix(in srgb, var(--kit-accent) 18%, transparent);
+    --v2-state-fg-info: var(--kit-accent);
+    --v2-state-bg-danger: color-mix(in srgb, var(--kit-danger) 14%, transparent);
+    --v2-state-fg-danger: var(--kit-danger);
+
+    /* Our own convenience aliases (for devcode-brand components) */
+    --v2-accent: var(--kit-accent);
+    --v2-accent-hover: var(--kit-accent-hover);
+    --v2-accent-pressed: var(--kit-accent);
+  }
+
+  html,
+  body {
+    background: var(--v2-background-bg-base);
+    scrollbar-color: color-mix(in srgb, var(--kit-accent) 28%, transparent) transparent;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--kit-accent) 35%, transparent);
+    color: var(--v2-text-text-base);
+  }
+}

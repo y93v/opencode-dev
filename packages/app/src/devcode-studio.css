@@ -1,0 +1,734 @@
+/* Opaque surfaces and a reserved footer lane prevent controls covering chat.
+   No global transforms, pointer handlers, cursors, canvas, or screen effects. */
+:root {
+  --oc-toolbar-height: 54px;
+  --oc-shadow: 0 18px 65px rgb(0 0 0 / 0.22);
+  --v2-text-text-accent: var(--kit-accent);
+  --v2-text-text-contrast: var(--kit-on-accent);
+  --text-base: var(--kit-text-base);
+  --text-weak: var(--kit-text-muted);
+  --text-weaker: var(--kit-text-faint);
+  --text-strong: var(--kit-text-base);
+  --icon-base: var(--kit-text-muted);
+  --icon-strong-base: var(--kit-text-base);
+  --border-base: var(--kit-border-base);
+  --border-weak-base: var(--kit-border-base);
+  --border-strong-base: var(--kit-border-strong);
+}
+body {
+  color: var(--kit-text-base);
+  -webkit-font-smoothing: antialiased;
+}
+#root {
+  box-sizing: border-box;
+  padding-bottom: var(--oc-toolbar-height);
+}
+[data-slot="vertical-tabs-sidebar"],
+[data-slot="vertical-tabs-panel"] {
+  background: var(--kit-bg-subtle);
+}
+[data-slot="vertical-tabs-sidebar"] {
+  border-inline-end: 1px solid var(--kit-border-base);
+}
+[data-slot="session-location-bar"] {
+  background: var(--kit-bg-base);
+  border-bottom: 1px solid var(--kit-border-base);
+}
+[data-slot="session-chat-panel"] {
+  background: var(--kit-bg-base);
+}
+[data-component="composer"] {
+  border: 1px solid var(--kit-border-strong);
+  border-radius: 16px;
+  background: var(--kit-bg-layer-01);
+  box-shadow: 0 5px 22px rgb(0 0 0 / 0.06);
+}
+[data-component="composer"]:focus-within {
+  border-color: var(--kit-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kit-accent) 12%, transparent);
+}
+[data-slot="new-session-composer"] {
+  filter: none;
+}
+[data-component="dialog-content"] {
+  border-color: var(--kit-border-base);
+  border-radius: 16px;
+}
+[data-slot="search-list-row"][aria-selected="true"] {
+  background: var(--kit-bg-layer-02);
+}
+[data-component="button"],
+[data-component="icon-button"] {
+  transition:
+    background-color 120ms,
+    border-color 120ms,
+    color 120ms;
+}
+[data-component="markdown"] {
+  line-height: 1.75;
+}
+[data-component="markdown"] pre {
+  border: 1px solid var(--kit-border-base);
+  border-radius: 10px;
+}
+
+.oc-toolbar {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 60;
+  min-height: 54px;
+  padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  background: var(--kit-bg-subtle);
+  border-top: 1px solid var(--kit-border-base);
+  -webkit-app-region: no-drag;
+  box-sizing: border-box;
+}
+.oc-toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  margin-inline-end: auto;
+}
+.oc-toolbar-brand b {
+  width: 23px;
+  height: 23px;
+  border: 1px solid var(--kit-border-strong);
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  color: var(--kit-accent);
+  font-size: 12px;
+}
+.oc-toolbar > [data-slot="devcode-reset-pill"],
+.oc-toolbar > [data-slot="devcode-website-pill"],
+.oc-toolbar > [data-slot="devcode-license-pill"],
+.oc-toolbar > .oc-update-wrap {
+  position: relative;
+  inset: auto;
+  z-index: auto;
+  flex-shrink: 0;
+  margin: 0;
+}
+.oc-toolbar [data-slot="devcode-reset-pill"],
+.oc-toolbar [data-slot="devcode-website-pill"],
+.oc-toolbar [data-slot="devcode-license-pill"],
+.oc-toolbar [data-slot="devcode-update-pill"],
+.oc-theme-trigger {
+  border-radius: 8px;
+  min-height: 34px;
+  font-size: 11px;
+  border-color: var(--kit-border-base);
+  box-shadow: none;
+  background: var(--kit-bg-layer-01);
+  color: var(--kit-text-muted);
+}
+.oc-toolbar [data-slot="devcode-reset-pill"]:hover,
+.oc-toolbar [data-slot="devcode-website-pill"]:hover,
+.oc-theme-trigger:hover {
+  background: var(--kit-bg-layer-02);
+  color: var(--kit-text-base);
+}
+.oc-toolbar [data-slot="devcode-license-pill"] > [role="tooltip"] {
+  max-width: min(420px, calc(100vw - 32px));
+}
+.oc-license-reveal {
+  position: fixed;
+  bottom: calc(var(--oc-toolbar-height) + 10px);
+  inset-inline-end: 16px;
+  inset-inline-start: auto;
+  z-index: 70;
+  max-width: min(420px, calc(100vw - 32px));
+  overflow-wrap: anywhere;
+}
+.oc-theme-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 11px;
+  border: 1px solid var(--kit-border-base);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.oc-theme-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.oc-trigger-theme {
+  font-size: 10px;
+  color: var(--kit-text-faint);
+  border-inline-start: 1px solid var(--kit-border-base);
+  padding-inline-start: 8px;
+}
+.oc-appearance {
+  padding: 0;
+  width: min(850px, calc(100vw - 40px));
+  max-width: none;
+  max-height: min(790px, calc(100dvh - 48px));
+  margin: auto;
+  border: 1px solid var(--kit-border-strong);
+  border-radius: 20px;
+  color: var(--kit-text-base);
+  background: var(--kit-bg-base);
+  box-shadow: var(--oc-shadow);
+  overflow: hidden;
+  -webkit-app-region: no-drag;
+}
+.oc-appearance[open] {
+  display: flex;
+  flex-direction: column;
+}
+.oc-appearance::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+.oc-appearance button,
+.oc-appearance input {
+  font: inherit;
+}
+.oc-appearance-header {
+  padding: 28px 30px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.oc-eyebrow {
+  color: var(--kit-accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+.oc-appearance h2 {
+  font-size: clamp(20px, 2.5vw, 27px);
+  font-weight: 600;
+  letter-spacing: -0.9px;
+  margin: 9px 0 7px;
+  line-height: 1.25;
+}
+.oc-appearance-header p {
+  color: var(--kit-text-muted);
+  font-size: 12px;
+  margin: 0;
+}
+.oc-close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 1px solid var(--kit-border-base);
+  border-radius: 9px;
+  background: var(--kit-bg-layer-01);
+  color: var(--kit-text-muted);
+  font-size: 22px !important;
+  cursor: pointer;
+}
+.oc-appearance-tools {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 30px 20px;
+  flex-shrink: 0;
+}
+.oc-theme-filters {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  background: var(--kit-bg-layer-01);
+  border: 1px solid var(--kit-border-base);
+  border-radius: 9px;
+}
+.oc-theme-filters button {
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--kit-text-muted);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.oc-theme-filters button[aria-pressed="true"] {
+  background: var(--kit-bg-layer-03);
+  color: var(--kit-text-base);
+  border-color: var(--kit-border-base);
+}
+.oc-appearance input {
+  width: 230px;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid var(--kit-border-base);
+  border-radius: 9px;
+  background: var(--kit-bg-layer-01);
+  color: var(--kit-text-base);
+  font-size: 12px;
+}
+.oc-appearance input::placeholder {
+  color: var(--kit-text-faint);
+}
+.oc-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 14px;
+  padding: 3px 30px 25px;
+  overflow: auto;
+  min-height: 0;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+.oc-theme-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: start;
+  color: var(--kit-text-base);
+  cursor: pointer;
+  border-radius: 10px;
+  min-width: 0;
+}
+.oc-theme-preview {
+  display: flex;
+  position: relative;
+  height: 100px;
+  width: 100%;
+  background: var(--preview-bg);
+  border: 1px solid var(--kit-border-strong);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.oc-theme-card[aria-pressed="true"] .oc-theme-preview {
+  outline: 2px solid var(--kit-accent);
+  outline-offset: 2px;
+}
+.oc-theme-card:hover .oc-theme-preview {
+  border-color: var(--kit-accent);
+}
+.oc-preview-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 27%;
+  padding: 15px 7px;
+  background: var(--preview-panel);
+}
+.oc-preview-sidebar i {
+  height: 3px;
+  border-radius: 4px;
+  background: var(--preview-accent);
+  opacity: 0.35;
+}
+.oc-preview-sidebar i:first-child {
+  width: 65%;
+  opacity: 0.9;
+  margin-bottom: 7px;
+}
+.oc-preview-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 11px;
+}
+.oc-preview-dots {
+  color: var(--preview-accent);
+  font-size: 9px;
+  line-height: 8px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+.oc-preview-content > i {
+  height: 3px;
+  width: 80%;
+  border-radius: 4px;
+  background: var(--preview-accent);
+  opacity: 0.4;
+}
+.oc-preview-content > i:nth-of-type(2) {
+  width: 55%;
+  opacity: 0.25;
+}
+.oc-preview-composer {
+  height: 21px;
+  border: 1px solid var(--preview-panel);
+  border-radius: 5px;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 3px;
+}
+.oc-preview-composer b {
+  display: grid;
+  place-items: center;
+  background: var(--preview-accent);
+  color: var(--preview-bg);
+  width: 14px;
+  height: 14px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+.oc-theme-check {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  background: var(--preview-accent);
+  color: var(--preview-bg);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+.oc-theme-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-inline: 2px;
+}
+.oc-theme-caption strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.oc-theme-caption > span {
+  font-size: 10px;
+  color: var(--kit-text-muted);
+  line-height: 1.4;
+}
+.oc-theme-empty {
+  grid-column: 1 / -1;
+  padding: 45px 10px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--kit-text-muted);
+}
+.oc-appearance-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 30px;
+  border-top: 1px solid var(--kit-border-base);
+  background: var(--kit-bg-subtle);
+  flex-shrink: 0;
+}
+.oc-appearance-footer > span {
+  font-size: 11px;
+  color: var(--kit-text-muted);
+}
+.oc-done {
+  background: var(--kit-accent);
+  color: var(--kit-on-accent);
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 23px;
+  cursor: pointer;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+.oc-appearance :focus-visible,
+.oc-toolbar :focus-visible {
+  outline: 2px solid var(--kit-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 900px) {
+  .oc-toolbar-brand span,
+  .oc-trigger-theme {
+    display: none;
+  }
+}
+@media (max-width: 680px) {
+  :root {
+    --oc-toolbar-height: 96px;
+  }
+  .oc-toolbar {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+    align-content: center;
+  }
+  .oc-toolbar-brand {
+    display: none;
+  }
+  .oc-appearance {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 24px);
+    border-radius: 14px;
+  }
+  .oc-appearance-header {
+    padding: 20px 18px 18px;
+  }
+  .oc-appearance-tools {
+    padding: 0 18px 18px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .oc-appearance input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .oc-theme-filters {
+    align-self: flex-start;
+  }
+  .oc-theme-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 3px 18px 20px;
+  }
+  .oc-appearance-footer {
+    padding: 12px 18px;
+  }
+}
+@media (max-height: 520px) {
+  .oc-appearance-header {
+    padding: 12px 18px;
+  }
+  .oc-appearance-header p,
+  .oc-eyebrow {
+    display: none;
+  }
+  .oc-appearance h2 {
+    font-size: 18px;
+    margin: 0;
+  }
+  .oc-appearance-tools {
+    padding-bottom: 10px;
+    flex-direction: row;
+  }
+  .oc-appearance-footer {
+    padding-block: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .oc-toolbar *,
+  .oc-appearance *,
+  [data-component="composer"] {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Effects decorate empty space and previews; the native cursor stays visible. */
+.oc-effects-controls { margin: 0 30px 18px; display:flex; flex-wrap:wrap; align-items:center; gap:12px 22px; font-size:12px; color:var(--kit-text-muted); flex-shrink:0; }
+.oc-motion-toggle, .oc-cursor-choice { display:flex; align-items:center; gap:8px; }
+.oc-effects-controls input[type=checkbox] { width:16px; height:16px; padding:0; accent-color:var(--kit-accent); }
+.oc-effects-controls select { background:var(--kit-bg-layer-01); color:var(--kit-text-base); border:1px solid var(--kit-border-strong); border-radius:7px; padding:6px 8px; font:inherit; }
+.oc-effects-hint { display:none; width:100%; color:var(--kit-text-muted); font-size:11px; }
+[data-oc-reduced-motion] .oc-effects-hint { display:block; }
+.oc-motion-badge { display:inline-block; margin-inline-start:6px; font-size:9px; font-weight:500; color:var(--kit-text-muted); }
+.oc-cursor, .oc-cursor-spark { position:fixed; pointer-events:none!important; user-select:none; z-index:80; border-radius:50%; transform:translate(-50%,-50%); contain:layout style; }
+.oc-cursor { width:30px; height:30px; border:1px solid var(--kit-accent); opacity:.7; transition:width .12s,height .12s; }
+.oc-cursor-glow { width:42px; height:42px; background:radial-gradient(circle,color-mix(in srgb,var(--kit-accent) 20%,transparent),transparent 70%); border:0; }
+.oc-cursor-trail { width:14px; height:14px; }
+.oc-cursor[data-hot] { width:38px; height:38px; }
+.oc-cursor-spark { width:4px; height:4px; background:var(--kit-accent); animation:oc-spark .42s ease-out forwards; }
+[data-oc-motion] .oc-theme-card[data-animated=true] .oc-preview-dots { animation:oc-breathe 3s ease-in-out infinite; }
+[data-oc-motion] [data-component=composer]:focus-within { animation:oc-composer-glow 5s ease-in-out infinite; }
+@keyframes oc-breathe { 50% { opacity:.4; letter-spacing:4px; } }
+@keyframes oc-spark { to { opacity:0; transform:translate(-50%,10px) scale(.3); } }
+@keyframes oc-composer-glow { 50% { box-shadow:0 0 0 3px color-mix(in srgb,var(--kit-accent) 18%,transparent),0 6px 24px color-mix(in srgb,var(--kit-accent) 8%,transparent); } }
+@media(max-width:680px) { .oc-effects-controls { margin:0 18px 14px; gap:10px; } }
+@media(prefers-reduced-motion:reduce),(hover:none) { .oc-cursor,.oc-cursor-spark { display:none!important; } }
+@media(prefers-reduced-motion:reduce) { [data-oc-motion] * { animation:none!important; } }
+
+.oc-theme-filters { flex-wrap:wrap; max-width:100%; }
+
+/* Clear kit — the glass belongs to the window, not to inner controls.
+   #root is the single glass pane; the wallpaper (or the desktop, when the
+   window is transparent and the wallpaper mode is "none") sits behind it. */
+html,
+body {
+  background: var(--v2-background-bg-base);
+}
+
+:root[data-user-theme="clear"] {
+  --glass-alpha: 0.18;
+  --glass-blur: 14px;
+  --glass-tint: 12 18 32;
+}
+
+/* Every surface the app paints reads the vendor --v2-* / --background-* tokens.
+   The theme style element writes them on :root; this selector outranks it, so
+   the Clear kit keeps its alpha surfaces even if a generated token would have
+   been opaque. Text tokens are left alone here and handled by the adaptive
+   contrast block below. */
+html[data-user-theme="clear"] {
+  --v2-background-bg-base: transparent;
+  --v2-background-bg-deep: rgb(12 18 32 / 0.1);
+  --v2-background-bg-subtle: rgb(12 18 32 / 0.12);
+  --v2-background-bg-layer-01: rgb(12 18 32 / 0.18);
+  --v2-background-bg-layer-02: rgb(12 18 32 / 0.24);
+  --v2-background-bg-layer-03: rgb(12 18 32 / 0.32);
+  --v2-background-bg-layer-04: rgb(12 18 32 / 0.4);
+
+  --background-base: transparent;
+  --background-weak: rgb(12 18 32 / 0.1);
+  --background-strong: rgb(12 18 32 / 0.18);
+  --background-stronger: rgb(12 18 32 / 0.26);
+}
+
+html[data-user-theme="clear"],
+html[data-user-theme="clear"] body {
+  /* Inline boot styles and the theme style element both target html. Only an
+     important author rule outranks an inline declaration, so this is the one
+     place that can guarantee a per-pixel transparent window. */
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+html[data-user-theme="clear"] body::before {
+  content: none;
+}
+
+/* One pane for the whole window: the wallpaper sits inside #root, under the
+   glass tint, so it renders in a transparent Electron window where a
+   negative-z pseudo-element does not. */
+html[data-user-theme="clear"] #root {
+  background-color: transparent;
+  background-image: linear-gradient(
+      rgb(var(--glass-tint) / var(--glass-alpha)),
+      rgb(var(--glass-tint) / var(--glass-alpha))
+    ),
+    var(--wallpaper, none);
+  background-size: cover;
+  background-position: center;
+  /* No backdrop-filter and no negative-z layers: a backdrop filter has nothing
+     to sample behind a transparent window (it only costs a full-window pass),
+     and promoted layers inside an isolated stacking context get re-rasterised
+     on resize, which flashes opaque when the window goes fullscreen. Painting
+     the tint and wallpaper straight onto #root keeps one stable surface. */
+}
+
+/* Dialogs and popups are the exception: they stay opaque so the content over
+   the desktop background is readable. Main app surfaces remain transparent. */
+html[data-user-theme="clear"] dialog,
+html[data-user-theme="clear"] [role="dialog"],
+html[data-user-theme="clear"] [role="menu"],
+html[data-user-theme="clear"] [role="listbox"],
+html[data-user-theme="clear"] .oc-appearance {
+  background-color: rgb(10 15 26 / 0.98);
+}
+
+html[data-user-theme="clear"] .oc-clear-controls {
+  border-top: 1px solid var(--kit-border-base);
+  padding-top: 10px;
+}
+
+html[data-user-theme="clear"] .oc-clear-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--kit-text-muted);
+}
+
+html[data-user-theme="clear"] .oc-clear-range input[type="range"] {
+  width: 110px;
+  accent-color: var(--kit-accent);
+}
+
+html[data-user-theme="clear"] .oc-clear-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--kit-text-muted);
+}
+
+html[data-user-theme="clear"] .oc-clear-upload input[type="file"] {
+  max-width: 180px;
+  font-size: 11px;
+  color: var(--kit-text-faint);
+}
+
+html[data-user-theme="clear"] .oc-clear-match {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--kit-text-muted);
+}
+
+html[data-user-theme="clear"] .oc-clear-match input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--kit-accent);
+}
+
+html[data-user-theme="clear"] .oc-clear-range input[type="color"] {
+  width: 30px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--kit-border-base);
+  border-radius: 6px;
+  background: transparent;
+}
+
+html[data-user-theme="clear"] .oc-clear-hint {
+  display: block;
+  width: 100%;
+  font-size: 11px;
+  color: var(--kit-text-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-user-theme="clear"] #root {
+    transition: none;
+  }
+}
+
+
+
+/* One shadow pass instead of four. The four-way offset halo doubled the paint
+   cost of every text repaint (streaming output, scrolling) for a marginal
+   gain; the adaptive contrast carries readability. */
+html[data-user-theme="clear"] #root {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.7);
+}
+
+html[data-user-theme="clear"][data-oc-contrast="bright"] #root {
+  --v2-text-text-base: #0b1120;
+  --v2-text-text-muted: #24314a;
+  --v2-text-text-faint: #3d5069;
+  --v2-text-text-contrast: #f8fbff;
+  --v2-icon-icon-base: #0b1120;
+  --v2-icon-icon-muted: #24314a;
+  --v2-icon-icon-faint: #3d5069;
+  --kit-text-base: #0b1120;
+  --kit-text-muted: #24314a;
+  --kit-text-faint: #3d5069;
+  text-shadow: 0 1px 2px rgb(255 255 255 / 0.55);
+}
+
+html[data-user-theme="clear"] :is([role="dialog"], [role="menu"], [role="listbox"], .oc-appearance) {
+  text-shadow: none;
+}
+
+/* Opaque surfaces keep the dark-theme foreground whatever the desktop behind
+   the window looks like. */
+html[data-user-theme="clear"][data-oc-contrast="bright"]
+  :is(dialog, [role="dialog"], [role="menu"], [role="listbox"], .oc-appearance) {
+  --v2-text-text-base: #f0f6ff;
+  --v2-text-text-muted: #b6c4e0;
+  --v2-text-text-faint: #7d8db0;
+  --v2-text-text-contrast: #07121b;
+  --v2-icon-icon-base: #f0f6ff;
+  --v2-icon-icon-muted: #b6c4e0;
+  --v2-icon-icon-faint: #7d8db0;
+  --kit-text-base: #f0f6ff;
+  --kit-text-muted: #b6c4e0;
+  --kit-text-faint: #7d8db0;
+}
