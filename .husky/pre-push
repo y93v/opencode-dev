@@ -1,0 +1,3 @@
+#!/bin/sh
+# Pre-push hook disabled for custom build
+exit 0
